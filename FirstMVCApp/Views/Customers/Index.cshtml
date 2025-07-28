@@ -1,0 +1,41 @@
+﻿@model FirstMVCApp.Models.CustomersViewModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+<form asp-action="Index">
+<div class="card shadow m-auto w-75">
+    <div class="card-header bg-info text-black p-1 d-flex">
+        <div class="flex-grow-0 mx-2">
+            Filter By: 
+            @Html.DropDownList(
+                "SelectedFilter",
+                        new SelectList(Model.FilterCriteria, "", "", Model.SelectedFilter),
+                        htmlAttributes: new { @class = "form-select-inline", @id = "FilterCriteria" }
+                        )
+        </div>
+        <div class="flex-grow-1 mx-1">
+            <input type="search" class="form-control" name="SearchTerm"/>
+        </div>
+        <div class="flex-grow-0">
+            <button  type="submit" class="btn btn-danger">Find</button>
+        </div>
+    </div>
+    <div class="card-body">
+        <table class="table table-dark">
+            <thead><tr><th>CustomerId</th><th>Company</th><th>Contact</th><th>City</th><th>Country</th></tr></thead>
+            @foreach(var item in Model.Customers)
+            {
+                <tr>
+                    <td>@item.CustomerId</td>
+                    <td>@item.CompanyName</td>
+                    <td>@item.ContactName</td>
+                    <td>@item.City</td>
+                    <td>@item.Country</td>
+                </tr>
+            }
+        </table>
+    </div>
+</div>
+</form>
+

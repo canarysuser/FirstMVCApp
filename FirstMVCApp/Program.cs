@@ -16,6 +16,7 @@ builder.Services.AddDbContext<NorthwindDbContext>(options => {
 
 //builder.Services.AddScoped<IProductRepository, ProductListRepository>();
 builder.Services.AddScoped<IProductRepository, ProductEFRepository>();
+builder.Services.AddScoped<ICustomerRepository, CustomerRepository   >();
 
 builder.Services.AddSingleton<DependencyClass>();
 
