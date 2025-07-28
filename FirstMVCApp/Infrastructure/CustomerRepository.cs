@@ -24,12 +24,14 @@ namespace FirstMVCApp.Infrastructure
 
         public async Task<IEnumerable<Customer>> GetAllCustomersAsync(string criteria)
         {
-            return await _db.Customers
-                .Where(c => c.CompanyName.Contains(criteria) ||
+            var list = await _db.Customers
+                .ToListAsync(); 
+            return  list
+                .Where(c => c.CompanyName.Contains(criteria, StringComparison.OrdinalIgnoreCase) ||
                              c.ContactName.Contains(criteria) ||
                              c.City.Contains(criteria) ||
                              c.Country.Contains(criteria))
-                .ToListAsync();
+                .ToList();
         }
 
         public async Task<IEnumerable<Customer>> GetCustomersByCityAsync(string city)
@@ -42,7 +44,7 @@ namespace FirstMVCApp.Infrastructure
         public async Task<IEnumerable<Customer>> GetCustomersByCountryAsync(string country)
         {
             return await _db.Customers
-                .Where(c => c.Country.Contains(country))
+                .Where(c => c.Country.ToLower().Contains(country.ToLower()))
                 .ToListAsync();
         }
     }

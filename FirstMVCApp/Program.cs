@@ -11,7 +11,8 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
 //Register the DbContext with the DI container
 builder.Services.AddDbContext<NorthwindDbContext>(options => {
     options.UseSqlServer(connectionString);
-    });
+    options.LogTo(Console.WriteLine, Microsoft.Extensions.Logging.LogLevel.Information);
+});
 
 
 //builder.Services.AddScoped<IProductRepository, ProductListRepository>();
