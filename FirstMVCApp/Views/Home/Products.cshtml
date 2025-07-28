@@ -1,0 +1,25 @@
+﻿@model FirstMVCApp.Models.Product
+@*
+    @model -> maps the view with a model object type name - strongly typed views 
+*@
+@{
+
+    <h2>Product Details</h2>
+    <dl>
+        <dt>Id</dt>
+        <dd>@Model.ProductId</dd>
+        @* 
+            @Model -> refers to the model object passed from the controller
+        *@
+        <dt>Name</dt>
+        <dd>@Model.ProductName</dd>
+        <dt>Price</dt>
+        <dd>@Model.UnitPrice</dd>
+        <dt>Stock</dt>
+        <dd>@Model.UnitsInStock</dd>
+        <dt>Discontinued?</dt>
+        <dd>@Model.Discontinued</dd>
+            
+    </dl>
+
+}

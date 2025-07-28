@@ -1,0 +1,89 @@
+﻿@model IEnumerable<FirstMVCApp.Models.Product>
+
+@{
+    //ViewData["Title"] = "Index";
+
+    string message = "Product List";
+}
+@*
+    Commenting Style in Razor Views. 
+*@
+<div class="card shadow m-auto w-75">
+    <div class="card-header bg-primary text-center fw-bold d-flex">
+        <div class="flex-grow-1 fs-4 text-white"> 
+            @message
+            @if(message.StartsWith("A")) 
+            {
+                <span class="badge bg-secondary">Starts with A</span>
+            }
+        </div>
+        <div>
+            <a asp-action="Create" class="btn btn-lg btn-outline-warning">Create New</a>
+        </div>
+    </div>
+    <div class="card-body ">
+        <table class="p-2 table table-dark table-striped table-hover">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.ProductId)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.ProductName)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.UnitsInStock)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.UnitPrice)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Discontinued)
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ProductId)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ProductName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.UnitsInStock)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.UnitPrice)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Discontinued)
+                        </td>
+                        <td>
+                            @* HTML Helpers - extension methods that helps/assist in generating HTML elements*@
+                            @Html.ActionLink( 
+                               linkText:"Edit",
+                               actionName: "Edit", 
+                               controllerName: "Products",
+                               routeValues: new { id=item.ProductId },
+                               htmlAttributes: new {@class="btn btn-sm btn-success"}
+                            )
+                            
+                            <a href="/Products/Details/@item.ProductId" class="btn btn-sm btn-warning">Details</a>
+                            
+                            @* Tag Helpers - attributes that are defined on HTML elements *@
+                            <a asp-action="Delete" asp-controller="Products" asp-route-id="@item.ProductId"
+                                class="btn btn-sm btn-danger">Delete</a>
+                            
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+</div>
+
