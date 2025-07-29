@@ -1,4 +1,5 @@
 using FirstMVCApp.Infrastructure;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -26,7 +27,12 @@ builder.Services.AddScoped<IProductRepository, ProductEFRepository>();
 builder.Services.AddScoped<ICustomerRepository, CustomerRepository   >();
 
 builder.Services.AddSingleton<DependencyClass>();
-
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddCookie("Cookies", options => {
+        options.LoginPath = "/Auth/Login"; // Redirect to this path for login
+        options.AccessDeniedPath = "/Auth/AccessDenied"; // Redirect to this path for access denied
+        
+    });
 builder.Services.AddControllersWithViews();
 /*builder.Logging.ClearProviders();
 builder.Logging.AddConsole();
@@ -42,6 +48,7 @@ if (!app.Environment.IsDevelopment())
 app.UseStaticFiles();
 app.UseRouting();
 
+app.UseAuthentication();
 app.UseAuthorization();
 app.UseSession();
 

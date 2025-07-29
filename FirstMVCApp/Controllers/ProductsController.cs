@@ -1,9 +1,11 @@
 ﻿using FirstMVCApp.Infrastructure;
 using FirstMVCApp.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FirstMVCApp.Controllers
 {
+    [Authorize]
     public class ProductsController : Controller
     {
         IProductRepository _productRepository;
@@ -26,6 +28,7 @@ namespace FirstMVCApp.Controllers
 
         //HTTP GET: default 
         [HttpGet]
+        [Authorize()]
         public IActionResult Index()
         {
             var products = _productRepository.GetAllProducts();

@@ -1,4 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace FirstMVCApp.Controllers
 {
@@ -11,14 +14,37 @@ namespace FirstMVCApp.Controllers
         }
 
         [HttpPost]
-        public IActionResult Login(Models.LoginViewModel model)
+        
+        public async Task<IActionResult> Login(Models.LoginViewModel model)
         {
+
+
+
             if (ModelState.IsValid)
             {
                 if(model.Username == "admin" && model.Password == "admin")
                 {
-                    // Here you would typically set up authentication cookies or tokens
-                    // For simplicity, we will just redirect to the home page
+                    
+                    var claims = new List<Claim>
+                    {
+                        new Claim(ClaimTypes.Name, model.Username),
+                        new Claim(ClaimTypes.Role, "Admin")
+                    };
+                    var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+
+                    var principal = new ClaimsPrincipal(identity);
+
+
+                    await HttpContext.SignInAsync(
+                        CookieAuthenticationDefaults.AuthenticationScheme,
+                        principal,
+                        new AuthenticationProperties
+                        {
+                            IsPersistent = model.RememberMe, // Remember me option
+                            ExpiresUtc = model.RememberMe ? DateTimeOffset.UtcNow.AddMinutes(60) : DateTime.UtcNow
+                        }
+                    );
+
                     TempData["Message"] = "Login successful!";
                     HttpContext.Session.SetString("Username", model.Username);
                 }
