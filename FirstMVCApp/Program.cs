@@ -14,6 +14,12 @@ builder.Services.AddDbContext<NorthwindDbContext>(options => {
     options.LogTo(Console.WriteLine, Microsoft.Extensions.Logging.LogLevel.Information);
 });
 
+builder.Services.AddSession(options => {
+    options.IdleTimeout = TimeSpan.FromMinutes(30); // Set session timeout to 30 minutes
+    options.Cookie.HttpOnly = true; // Make the session cookie HTTP-only
+    options.Cookie.IsEssential = true; // Make the session cookie essential for the application\
+   
+});
 
 //builder.Services.AddScoped<IProductRepository, ProductListRepository>();
 builder.Services.AddScoped<IProductRepository, ProductEFRepository>();
@@ -37,6 +43,7 @@ app.UseStaticFiles();
 app.UseRouting();
 
 app.UseAuthorization();
+app.UseSession();
 
 app.MapStaticAssets();
 

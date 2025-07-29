@@ -1,0 +1,24 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+
+<div class="card">
+    <div class="card-body">
+
+        <div class="alert alert-warning">
+            View Data: @ViewData["Message"]
+        </div>
+        <div class="alert alert-danger">
+            Temp Data: @TempData["Message"]
+        </div>
+        <div class="alert alert-success">
+            Session: @Context.Session.GetString("Message")
+        </div>
+
+        <a asp-action="Index" asp-route-id="1" class="btn btn-outline-info">Go to Contact</a>
+        <a asp-action="Index" asp-route-id="0" class="btn btn-outline-info">Reload</a>
+    </div>
+</div>
