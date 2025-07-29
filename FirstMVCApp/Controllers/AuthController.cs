@@ -41,7 +41,7 @@ namespace FirstMVCApp.Controllers
                         new AuthenticationProperties
                         {
                             IsPersistent = model.RememberMe, // Remember me option
-                            ExpiresUtc = model.RememberMe ? DateTimeOffset.UtcNow.AddMinutes(60) : DateTime.UtcNow
+                            ExpiresUtc = DateTimeOffset.UtcNow.AddMinutes(60) 
                         }
                     );
 
