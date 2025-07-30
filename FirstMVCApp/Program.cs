@@ -10,16 +10,18 @@ var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 
 //Register the DbContext with the DI container
-builder.Services.AddDbContext<NorthwindDbContext>(options => {
+builder.Services.AddDbContext<NorthwindDbContext>(options =>
+{
     options.UseSqlServer(connectionString);
     options.LogTo(Console.WriteLine, Microsoft.Extensions.Logging.LogLevel.Information);
 });
 
-builder.Services.AddSession(options => {
+builder.Services.AddSession(options =>
+{
     options.IdleTimeout = TimeSpan.FromMinutes(30); // Set session timeout to 30 minutes
     options.Cookie.HttpOnly = true; // Make the session cookie HTTP-only
     options.Cookie.IsEssential = true; // Make the session cookie essential for the application\
-   
+
 });
 builder.Services.AddHttpContextAccessor(); // Register HttpContextAccessor to access HttpContext in services
 builder.Services.AddScoped<HttpClient>();
@@ -27,14 +29,15 @@ builder.Services.AddScoped<HttpClient>();
 //builder.Services.AddScoped<IProductRepository, ProductEFRepository>();
 builder.Services.AddScoped<IProductRepository, ProductAPIRepository>();
 
-builder.Services.AddScoped<ICustomerRepository, CustomerRepository   >();
+builder.Services.AddScoped<ICustomerRepository, CustomerRepository>();
 
 builder.Services.AddSingleton<DependencyClass>();
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-    .AddCookie("Cookies", options => {
+    .AddCookie("Cookies", options =>
+    {
         options.LoginPath = "/Auth/Login"; // Redirect to this path for login
         options.AccessDeniedPath = "/Auth/AccessDenied"; // Redirect to this path for access denied
-        
+
     });
 builder.Services.AddControllersWithViews();
 /*builder.Logging.ClearProviders();
