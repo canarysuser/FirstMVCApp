@@ -21,9 +21,12 @@ builder.Services.AddSession(options => {
     options.Cookie.IsEssential = true; // Make the session cookie essential for the application\
    
 });
-
+builder.Services.AddHttpContextAccessor(); // Register HttpContextAccessor to access HttpContext in services
+builder.Services.AddScoped<HttpClient>();
 //builder.Services.AddScoped<IProductRepository, ProductListRepository>();
-builder.Services.AddScoped<IProductRepository, ProductEFRepository>();
+//builder.Services.AddScoped<IProductRepository, ProductEFRepository>();
+builder.Services.AddScoped<IProductRepository, ProductAPIRepository>();
+
 builder.Services.AddScoped<ICustomerRepository, CustomerRepository   >();
 
 builder.Services.AddSingleton<DependencyClass>();

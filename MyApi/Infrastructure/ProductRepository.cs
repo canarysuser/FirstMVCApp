@@ -28,23 +28,38 @@ namespace MyApi.Infrastructure
                 .FirstOrDefaultAsync(p => p.ProductId == id);
         }
 
+       // Mutex mtx = new Mutex(false);
+       // static Product copyOfProduct = null; 
         public Task<bool> UpsertProductAsync(Product product)
         {
             var existingProduct = _db.Products
                 .AsNoTracking()
                 .FirstOrDefault(p => p.ProductId == product.ProductId);
-
-            if (existingProduct == null)
-                {
-                _db.Products.Add(product);
+           /* mtx.WaitOne();
+            if(copyOfProduct==null)
+            copyOfProduct = product;
+            if (copyOfProduct.ProductName == product.ProductName)
+            {
+                //Do not do anything
+                throw new DbUpdateConcurrencyException("Product with same name is already updated.");
             }
             else
-            {
-                _db.Products.Update(product);
-            }
+            {*/
 
-            return _db.SaveChangesAsync()
-                .ContinueWith(t => t.Result > 0);
+                if (existingProduct == null)
+                {
+                    _db.Products.Add(product);
+                }
+                else
+                {
+                    _db.Products.Update(product);
+                }
+               // copyOfProduct = product;
+                return _db.SaveChangesAsync()
+                    .ContinueWith(t => t.Result > 0);
+          //  }
+           //mtx.ReleaseMutex();
+
         }
 
         public Task<bool> DeleteProductAsync(int id)
