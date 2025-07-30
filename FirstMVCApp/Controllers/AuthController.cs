@@ -17,9 +17,6 @@ namespace FirstMVCApp.Controllers
         
         public async Task<IActionResult> Login(Models.LoginViewModel model)
         {
-
-
-
             if (ModelState.IsValid)
             {
                 if(model.Username == "admin" && model.Password == "admin")
