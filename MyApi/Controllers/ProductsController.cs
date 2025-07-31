@@ -19,6 +19,7 @@ namespace MyApi.Controllers
             _productRepository = productRepository;
             _logger = logger;
         }
+
         [HttpGet]
         public async Task<IActionResult> GetAllProducts()
         {
@@ -58,6 +59,28 @@ namespace MyApi.Controllers
             if (await _productRepository.DeleteProductAsync(id))
                 return NoContent();
             return NotFound();
+        }
+
+
+        [HttpGet("authget")]
+        public IActionResult GetProductsAfterAuth()
+        {
+            string token = HttpContext.Request.Headers["Authorization"].FirstOrDefault()?.Split(" ").Last();
+            if(token==null) 
+                return Unauthorized("Token is missing or invalid.");
+
+            HttpClient client = new HttpClient();
+            client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+            var response = client.GetAsync("http://localhost:5001/api/auth/validate").Result;
+            if(response.IsSuccessStatusCode)
+            {
+                var products = _productRepository.GetAllProductsAsync().Result;
+                return Ok(products);
+            }
+            else
+            {
+                return StatusCode((int)response.StatusCode, "Failed to retrieve products.");
+            }
         }
 
     }
